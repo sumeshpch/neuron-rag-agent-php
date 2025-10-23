@@ -1,0 +1,24 @@
+# Environment configuration
+.env
+
+# Composer dependencies
+/vendor/
+composer.lock
+
+# Vector store data
+/storage/
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
