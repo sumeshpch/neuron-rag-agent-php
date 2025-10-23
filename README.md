@@ -132,72 +132,6 @@ neuronADK/
     └── vectors/          # Vector embeddings storage
 ```
 
-## 🔧 How It Works
-
-### The RAG Agent Class
-
-The `KnowledgeBot` class extends `NeuronAI\RAG\RAG` and configures three essential components:
-
-```php
-class KnowledgeBot extends RAG
-{
-    // 1. AI Provider (LLM for generating responses)
-    protected function provider(): AIProviderInterface
-    {
-        return new Anthropic(
-            key: $_ENV['ANTHROPIC_API_KEY'],
-            model: 'claude-3-5-sonnet-20241022'
-        );
-    }
-    
-    // 2. Embeddings Provider (converts text to vectors)
-    protected function embeddings(): EmbeddingsProviderInterface
-    {
-        return new OpenAIEmbeddingProvider(
-            key: $_ENV['OPENAI_API_KEY'],
-            model: 'text-embedding-3-small'
-        );
-    }
-    
-    // 3. Vector Store (stores and searches embeddings)
-    protected function vectorStore(): VectorStoreInterface
-    {
-        return new FileVectorStore(
-            directory: 'storage/vectors',
-            key: 'knowledge_bot'
-        );
-    }
-}
-```
-
-### Loading Knowledge
-
-The `load_knowledge.php` script uses Neuron's data loaders to process documents:
-
-```php
-$bot = KnowledgeBot::make();
-
-// Load a markdown file
-$documents = FileDataLoader::for('knowledge/sample_knowledge.md')->getDocuments();
-
-// Add to vector store
-$bot->addDocuments($documents);
-```
-
-### Asking Questions
-
-The `chat.php` script provides an interactive interface:
-
-```php
-$bot = KnowledgeBot::make();
-
-// Ask a question
-$response = $bot->chat(new UserMessage('What is Neuron ADK?'));
-
-// Get the answer
-echo $response->getContent();
-```
-
 ## 📚 Adding Your Own Knowledge
 
 1. Create new `.md` or `.txt` files in the `knowledge/` directory
@@ -260,20 +194,25 @@ Similar concepts have similar vectors, enabling semantic search.
 
 ### Change AI Provider
 
-Edit `src/Neuron/KnowledgeBot.php` to use different providers:
+The bot automatically selects the AI provider based on the `AI_PROVIDER` environment variable in your `.env` file:
 
-```php
-// Use OpenAI instead of Anthropic
-use NeuronAI\Providers\OpenAI\OpenAI;
+```env
+# Use Anthropic (Claude)
+AI_PROVIDER=anthropic
+ANTHROPIC_API_KEY=your_key_here
+ANTHROPIC_MODEL=claude-3-5-sonnet-20241022
 
-protected function provider(): AIProviderInterface
-{
-    return new OpenAI(
-        key: $_ENV['OPENAI_API_KEY'],
-        model: 'gpt-4-turbo-preview'
-    );
-}
+# OR use OpenAI (GPT)
+AI_PROVIDER=openai
+OPENAI_API_KEY=your_key_here
+OPENAI_MODEL=gpt-4-turbo-preview
 ```
+
+**Supported providers:**
+- `anthropic` - Anthropic Claude (default)
+- `openai` - OpenAI GPT models
+
+No code changes needed! Just update your `.env` file and restart the bot.
 
 ### Adjust Embedding Model
 

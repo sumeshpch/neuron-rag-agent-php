@@ -18,9 +18,13 @@ Create a `.env` file (copy from `env.example`):
 cp env.example .env
 ```
 
-Edit `.env` and add your API keys:
+Edit `.env` and configure your AI provider:
 
 ```env
+# Choose your provider (anthropic or openai)
+AI_PROVIDER=anthropic
+
+# Add your API keys
 ANTHROPIC_API_KEY=sk-ant-xxxxx
 OPENAI_API_KEY=sk-xxxxx
 ```
@@ -28,6 +32,11 @@ OPENAI_API_KEY=sk-xxxxx
 **Get API Keys:**
 - Anthropic: https://console.anthropic.com/
 - OpenAI: https://platform.openai.com/api-keys
+
+**Provider Options:**
+- Use `AI_PROVIDER=anthropic` for Claude (recommended)
+- Use `AI_PROVIDER=openai` for GPT models
+- OpenAI key is needed for embeddings regardless of your LLM choice
 
 ### 3️⃣ Load Knowledge Base
 

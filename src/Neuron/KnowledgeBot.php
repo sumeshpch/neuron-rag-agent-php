@@ -4,6 +4,7 @@ namespace App\Neuron;
 
 use NeuronAI\Providers\AIProviderInterface;
 use NeuronAI\Providers\Anthropic\Anthropic;
+use NeuronAI\Providers\OpenAI\OpenAI;
 use NeuronAI\RAG\Embeddings\EmbeddingsProviderInterface;
 use NeuronAI\RAG\Embeddings\OpenAIEmbeddingProvider;
 use NeuronAI\RAG\RAG;
@@ -19,18 +20,30 @@ class KnowledgeBot extends RAG
     /**
      * Configure the AI provider (LLM)
      * 
-     * This example uses Anthropic's Claude, but you can use any supported provider:
-     * - OpenAI
-     * - Anthropic
-     * - Google (Gemini)
-     * - Ollama (for local models)
+     * Dynamically selects the provider based on AI_PROVIDER environment variable.
+     * Supported providers:
+     * - openai: OpenAI (GPT models)
+     * - anthropic: Anthropic (Claude models)
+     * - google: Google (Gemini models)
+     * - ollama: Ollama (local models)
      */
     protected function provider(): AIProviderInterface
     {
-        return new Anthropic(
-            key: $_ENV['ANTHROPIC_API_KEY'] ?? getenv('ANTHROPIC_API_KEY'),
-            model: $_ENV['ANTHROPIC_MODEL'] ?? getenv('ANTHROPIC_MODEL') ?: 'claude-3-5-sonnet-20241022',
-        );
+        $provider = $_ENV['AI_PROVIDER'] ?? getenv('AI_PROVIDER') ?: 'anthropic';
+        
+        return match(strtolower($provider)) {
+            'openai' => new OpenAI(
+                key: $_ENV['OPENAI_API_KEY'] ?? getenv('OPENAI_API_KEY'),
+                model: $_ENV['OPENAI_MODEL'] ?? getenv('OPENAI_MODEL') ?: 'gpt-4-turbo-preview',
+            ),
+            'anthropic' => new Anthropic(
+                key: $_ENV['ANTHROPIC_API_KEY'] ?? getenv('ANTHROPIC_API_KEY'),
+                model: $_ENV['ANTHROPIC_MODEL'] ?? getenv('ANTHROPIC_MODEL') ?: 'claude-3-5-sonnet-20241022',
+            ),
+            default => throw new \InvalidArgumentException(
+                "Unsupported AI provider: {$provider}. Supported providers: openai, anthropic"
+            ),
+        };
     }
     
     /**
