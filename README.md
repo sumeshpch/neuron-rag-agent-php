@@ -20,28 +20,28 @@ A proof of concept demonstrating how to build a **RAG (Retrieval Augmented Gener
          ▼
 ┌─────────────────────────────────┐
 │    Knowledge Bot (RAG Agent)    │
-│  ┌──────────────────────────┐  │
-│  │  1. Embed the question   │  │
-│  └──────────┬───────────────┘  │
+│  ┌──────────────────────────┐   │
+│  │  1. Embed the question   │   │
+│  └──────────┬───────────────┘   │
 │             ▼                   │
-│  ┌──────────────────────────┐  │
-│  │  2. Search vector store  │  │
-│  │     for similar docs     │  │
-│  └──────────┬───────────────┘  │
+│  ┌──────────────────────────┐   │
+│  │  2. Search vector store  │   │
+│  │     for similar docs     │   │
+│  └──────────┬───────────────┘   │
 │             ▼                   │
-│  ┌──────────────────────────┐  │
-│  │  3. Retrieve relevant    │  │
-│  │     context chunks       │  │
-│  └──────────┬───────────────┘  │
+│  ┌──────────────────────────┐   │
+│  │  3. Retrieve relevant    │   │
+│  │     context chunks       │   │
+│  └──────────┬───────────────┘   │
 │             ▼                   │
-│  ┌──────────────────────────┐  │
-│  │  4. Send context + query │  │
-│  │     to LLM               │  │
-│  └──────────┬───────────────┘  │
+│  ┌──────────────────────────┐   │
+│  │  4. Send context + query │   │
+│  │     to LLM               │   │
+│  └──────────┬───────────────┘   │
 │             ▼                   │
-│  ┌──────────────────────────┐  │
-│  │  5. Generate response    │  │
-│  └──────────────────────────┘  │
+│  ┌──────────────────────────┐   │
+│  │  5. Generate response    │   │
+│  └──────────────────────────┘   │
 └─────────────────────────────────┘
          │
          ▼
@@ -323,7 +323,6 @@ Before deploying to production:
 
 - **Neuron AI GitHub**: https://github.com/inspector-apm/neuron-ai
 - **Documentation**: https://docs.neuron-ai.dev
-- **Tutorial Article**: https://inspector.dev/how-to-create-a-rag-agent-with-neuron-adk-for-php/
 - **Newsletter**: https://neuron-ai.dev
 - **E-Book**: [Start With AI Agents In PHP](https://www.amazon.com/dp/B0F1YX8KJB)
 
